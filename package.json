@@ -1,0 +1,11 @@
+{
+	"name":"node-radio",
+	"version":"0.0.1",
+	"dependencies": {
+		"express": "2.5.10",
+		"stache":"0.1.0",
+		"mpg123":"*",
+		"plist":"*",
+		"scp":"git://github.com/ecto/node-scp.git"
+	}
+}
