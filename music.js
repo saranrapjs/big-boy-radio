@@ -1,8 +1,8 @@
 var mpg = require('mpg123'),
 	scp = require('scp'),
 	plist = require('plist'),
+	fs = require('fs'),
 	config = require('./config');
-
 //convenience filenamer getter
 String.prototype.filename = function() {
 	return this.toString().replace(/^.*[\\\/]/, '');
@@ -53,11 +53,10 @@ track.prototype.readable = function() {
 track.prototype.transfer = function(callback) {
 	scp.get({
 		file:"\""+this.path.replace(/(["\s'$`\\\()])/g,'\\$1')+"\"",
-		//file: "\"/Users/jeffsisson/Music/iTunes/iTunes Music/Erykah Badu/Baduizm/05 Sometimes (mix#9).mp3\"".replace(/(["\s'$`\\\()])/g,'\\$1'), // remote file to grab
-		user: 'jeffsisson',   // username to authenticate as on remote system
-		host: 'localhost',   // remote host to transfer from, set up in your ~/.ssh/config
-		port: '22',         // remote port, optional, defaults to '22'
-		path: config.path           // local path to save to (this would result in a ~/file.txt on the local machine)
+		user: config.user,
+		host: config.host,
+		port: config.port,
+		path: config.path
 	},function(err){
 		if (err) {
 			console.log("tranfser error!");
@@ -116,7 +115,11 @@ playlist.prototype.start = function(filename) {
 	return this;
 }
 playlist.prototype.cleanup = function() {
-
+	console.log('cleaning up');
+	this.list.forEach(function(t) {
+		console.log(t.local);
+		fs.unlinkSync(t.local);
+	});
 }
 playlist.prototype.current = function() {
 	return this.list[this.position];
@@ -136,10 +139,10 @@ var music = {
 		console.log('transferring library file...');
 		scp.get({
 			file:"\"~/Music/iTunes/iTunes\\ Music\\ Library.xml\"",
-			user: 'jeffsisson',   // username to authenticate as on remote system
-			host: 'localhost',   // remote host to transfer from, set up in your ~/.ssh/config
-			port: '22',         // remote port, optional, defaults to '22'
-			path: "\"./iTunes\ Music\ Library.xml\""          // local path to save to (this would result in a ~/file.txt on the local machine)
+			user: config.user,
+			host: config.host,
+			port: config.port,
+			path: "\"./iTunes\ Music\ Library.xml\""
 		},function(err){
 			if (err) {
 				console.log("Couldn't transfer iTunes library xml!");
@@ -154,6 +157,7 @@ var music = {
 		this.getLibrary(function() {
 			self.current = new playlist(self.import());
 			self.current.start().onFinish(function() {
+				self.current.cleanup();
 				console.log('starting over')
 				self.load();
 			});
@@ -170,7 +174,7 @@ var music = {
 			last = new Date(tracks[ keys[keys.length-1] ]['Date Added']),
 			startDate = randomDate(first,last),
 			setDuration = 0,
-			maxInMinutes = 5,
+			maxInMinutes = 1,
 			i = keys.length-1;
 		console.log('Importing Library from '+first+" to "+last);
 		while ( ms2mn(setDuration) < maxInMinutes) {
