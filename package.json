@@ -6,6 +6,7 @@
 		"stache":"0.1.0",
 		"mpg123":"*",
 		"plist":"*",
-		"scp":"git://github.com/ecto/node-scp.git"
+		"scp":"git://github.com/ecto/node-scp.git",
+		"sqlite3":"*"
 	}
 }
