@@ -51,6 +51,7 @@ playlist.prototype.play = function(position) {
 	var self = this,
 		player = new mpg()
 			.play(this.list[position].local)
+			.on('error',function(error) { console.log(error); })
 			.on('end', function () {
 				player.close();
 				console.log('track ended')
