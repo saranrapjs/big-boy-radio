@@ -1,12 +1,8 @@
-var sqlite3 = require('sqlite3').verbose(),
-	db = new sqlite3.Database('library.db');
-var tracks = [];
-var get = db.each("SELECT * FROM library",function(err,row) {
-	if (err) {
-
-	} else {
-		tracks.push(row);
-	}
-},function() {
-	console.log(tracks.length);	
-});
+var mpg = require('mpg123');
+	var self = this,
+		player = new mpg()
+			.play("files/17 2K Strut.mp3")
+			.on('end', function () {
+				
+				player.play('files/15 Behold The Land.mp3');
+			});
