@@ -50,7 +50,7 @@ playlist.prototype.play = function(position) {
 	console.log("Playing: "+this.list[position].readable());
 	var self = this,
 		player = new mpg()
-			.play(this.list[position].path)
+			.play(this.list[position].local)
 			.on('end', function () {
 				self.position++;
 				if (self.list[self.position]) {
@@ -136,7 +136,7 @@ var music = {
 				console.log(tracks.length+" total tracks")
 				var added = [],
 					setDuration = 0,
-					maxInMinutes = 1,
+					maxInMinutes = config.length,
 					i = tracks.length-1;
 				console.log('Importing Library ...');
 
