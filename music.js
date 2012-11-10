@@ -72,7 +72,7 @@ playlist.prototype.onFinish = function(callback) {
 playlist.prototype.transferCheck = function( success ) {
 	if (success === true) this.successfullyTransferred++;
 	this.allTransfers++;
-	if (this.allTransfers == this.list.length) {
+	if (this.allTransfers == (this.list.length/2)) {
 		console.log('Transfers finished!');
 		if (this.transferCallback) this.transferCallback();
 	}
@@ -114,7 +114,6 @@ var music = {
 	},
 	load:function() {
 		var self = this;
-		this.getLibrary
 		this.import(function(data) {
 			self.current = new playlist(data);
 			self.current.start().onFinish(function() {
