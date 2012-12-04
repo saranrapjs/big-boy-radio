@@ -13,6 +13,9 @@ ul {
 	margin:0;
 	list-style: none;
 }
+li:first-child {
+	font-weight:bold;
+}
 li {
 	-webkit-font-smoothing:antialiased;
 	margin:1em 0;
