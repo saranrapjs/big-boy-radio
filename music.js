@@ -112,7 +112,9 @@ playlist.prototype.start = function() {
 playlist.prototype.cleanup = function() {
 	this.list.forEach(function(t) {
 		console.log(t.local);
-		fs.unlinkSync(t.local);
+		fs.unlink(t.local,function (err) {
+
+		});
 	});
 }
 playlist.prototype.current = function() {
