@@ -36,7 +36,7 @@ track.prototype.import = function(data) {
   this.local = config.path + this.path.filename();
 }
 track.prototype.shouldAdd = function( startDate ) {
-  return (this.type === 'File' && this.duration.ms2mn() < 30 && /mp4|m4a|m4v/gi.test(this.local) === false && this.dateAdded < startDate ) ? true : false;
+  return (this.type === 'File' && this.duration.ms2mn() < 30 && /mp4|m4a|\.aif|m4v/gi.test(this.local) === false && this.dateAdded < startDate ) ? true : false;
 }
 track.prototype.date = function() {
 	var monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
